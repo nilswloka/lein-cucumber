@@ -15,8 +15,8 @@ In the current version, you cannot specify any configuration options. The follow
 * A progress report will be printed to the console. 
 * The complete report (formatted with `PrettyFormatter`) will be written to `test-reports/cucumber.out`. Consider adding `:extra-files-to-clean ["test-reports"]` to your project.clj.
 * Leiningen will exit with the exit status of the cucumber-jvm [runtime](https://github.com/cucumber/cucumber-jvm/blob/master/core/src/main/java/cucumber/runtime/Runtime.java).
-* Put your `.feature` files into `test/features/`
-* Put your step definitions into `test/features/step_definitions/`
+* Put your `.feature` files into `features/` (feature-paths can be configured in project.clj using the `:cucumber-feature-path` parameter, e.g `:cucumber-feature-path ["test/features/"]`.)
+* Put your step definitions into `features/step_definitions/`
 
 See https://github.com/cucumber/cucumber-jvm/tree/master/clojure/src/test/resources/cucumber/runtime/clojure for an example specification.
 
