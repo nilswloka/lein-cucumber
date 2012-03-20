@@ -1,6 +1,6 @@
-(defproject lein-cucumber "0.2.0"
+(defproject lein-cucumber "1.0.0.M1-SNAPSHOT"
   :description "Run cucumber-jvm specifications with leiningen"
-  :dependencies [[info.cukes/cucumber-clojure "1.0.0.RC21"]]
+  :dependencies [[info.cukes/cucumber-clojure "1.0.0.RC23-SNAPSHOT"]]
   :eval-in-leiningen true
   :license {:name "Unlicense"
             :url "http://unlicense.org/"
