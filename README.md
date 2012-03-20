@@ -4,7 +4,7 @@ This is a very simple leiningen plugin for use with [cucumber-jvm](https://githu
 
 ## Usage
 
-1. Add `[lein-cucumber "0.1.0"]` to `:dev-dependencies` in your project.clj
+1. Add `[lein-cucumber "0.2.0"]` to `:dev-dependencies` in your project.clj
 2. Run `lein deps` to fetch all dependencies.
 3. Run all Cucumber features with `lein cucumber`
 
