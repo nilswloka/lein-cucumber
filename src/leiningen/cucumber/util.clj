@@ -1,52 +1,33 @@
 (ns leiningen.cucumber.util
   (:use [clojure.java.io])
-  (:import [gherkin.formatter PrettyFormatter])
-  (:import [cucumber.formatter FormatterFactory MultiFormatter])
+  (:import [cucumber.formatter CucumberPrettyFormatter])
   (:import [cucumber.io FileResourceLoader])
-  (:import [cucumber.cli DefaultRuntimeFactory])
-  (:import [cucumber.runtime.snippets SummaryPrinter])
-  (:import [java.io File])
-  (:import [java.util ArrayList]))
+  (:import [cucumber.runtime.model CucumberFeature])
+  (:import [cucumber.runtime RuntimeOptions]))
 
-(defn- report-writer []
-  (let [report-directory (file "test-reports")
-        report-file (file report-directory "cucumber.out")]
+(defn- report-writer [target-path]
+  (let [report-file (file target-path "test-reports" "cucumber.out")]
     (make-parents report-file)
     (writer report-file)))
 
-(defn- create-multi-formatter []
+(defn- create-runtime-options [feature-paths glue-paths target-path]
+  (let [out (report-writer target-path)
+        formatter (CucumberPrettyFormatter. out)
+        runtime-options
+        (proxy [RuntimeOptions] [(into-array String [])]
+          (reporter [classloader] formatter)
+          (formatter [classloader] formatter)
+          (cucumberFeatures [resource-loader] (CucumberFeature/load resource-loader feature-paths [])))]
+    (set! (. runtime-options glue) (java.util.ArrayList. glue-paths))
+    runtime-options))
+
+(defn- create-runtime [runtime-options]
   (let [classloader (.getContextClassLoader (Thread/currentThread))
-        formatter-factory (FormatterFactory. classloader)
-        multi-formatter (MultiFormatter. classloader)
-        out (report-writer)
-        formatter (PrettyFormatter. out true true)]
-    (doto multi-formatter
-      (.add formatter)
-      (.add (.createFormatter formatter-factory "progress" System/out)))
-    multi-formatter))
+        resource-loader (FileResourceLoader.)]
+    (cucumber.runtime.Runtime. resource-loader classloader runtime-options)))
 
-(defn- create-runtime [stepdef-paths]
-  (let [runtime-factory (DefaultRuntimeFactory.)
-        classloader (.getContextClassLoader (Thread/currentThread))
-        glue-paths (ArrayList. stepdef-paths)
-        file-resource-loader (FileResourceLoader.)]
-    (.createRuntime runtime-factory file-resource-loader glue-paths classloader false)))
-
-(defn- gen-stepdef-paths [feature-paths]
-  (map (fn [path]
-         (format "%s%sstep_definitions" path (if (= (last path) \/) "" "/")))
-       feature-paths))
-
-(defn run-cucumber! [feature-paths]
-  (let [multi-formatter (create-multi-formatter)
-        feature-paths (if (some identity feature-paths)
-                        feature-paths ["features"])
-        runtime (create-runtime (gen-stepdef-paths feature-paths))
-        formatter (.formatterProxy multi-formatter)
-        reporter (.reporterProxy multi-formatter)
-        summary-printer (SummaryPrinter. System/out)]
-    (.run runtime (ArrayList. feature-paths) (ArrayList.) formatter reporter)
-    (.done formatter)
-    (.print summary-printer runtime)
-    (.close formatter)
+(defn run-cucumber! [feature-paths glue-paths target-path]
+  (let [runtime-options (create-runtime-options feature-paths glue-paths target-path)
+        runtime (create-runtime runtime-options)]
+    (.run runtime)
     runtime))
