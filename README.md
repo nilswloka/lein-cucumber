@@ -28,7 +28,7 @@ You can configure feature paths like this:
 * The complete report (formatted with `CucumberPrettyFormatter`) will be written to `test-reports/cucumber.out` inside your project's target directory (usually `target/`).
 * Leiningen will exit with the exit status of the cucumber-jvm [runtime](https://github.com/cucumber/cucumber-jvm/blob/master/core/src/main/java/cucumber/runtime/Runtime.java).
 
-See https://github.com/cucumber/cucumber-jvm/tree/master/examples/clojure_cukes for an example project.
+See https://github.com/nilswloka/cucumber-jvm/tree/new-clojure-example/examples/clojure_cukes for an example project.
 
 ## Unlicense
 
