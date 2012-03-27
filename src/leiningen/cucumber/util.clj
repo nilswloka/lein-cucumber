@@ -1,6 +1,6 @@
 (ns leiningen.cucumber.util
   (:use [clojure.java.io])
-  (:import [cucumber.formatter CucumberPrettyFormatter])
+  (:import [cucumber.formatter CucumberPrettyFormatter ProgressFormatter])
   (:import [cucumber.io FileResourceLoader])
   (:import [cucumber.runtime.model CucumberFeature])
   (:import [cucumber.runtime RuntimeOptions]))
@@ -11,14 +11,12 @@
     (writer report-file)))
 
 (defn- create-runtime-options [feature-paths glue-paths target-path]
-  (let [out (report-writer target-path)
-        formatter (CucumberPrettyFormatter. out)
-        runtime-options
-        (proxy [RuntimeOptions] [(into-array String [])]
-          (reporter [classloader] formatter)
-          (formatter [classloader] formatter)
-          (cucumberFeatures [resource-loader] (CucumberFeature/load resource-loader feature-paths [])))]
-    (set! (. runtime-options glue) (java.util.ArrayList. glue-paths))
+  (let [runtime-options (RuntimeOptions. (into-array String []))]
+    (.addAll (.featurePaths runtime-options) feature-paths)
+    (.addAll (.glue runtime-options) glue-paths)
+    (doto (.formatters runtime-options)
+      (.add (CucumberPrettyFormatter. (report-writer target-path)))
+      (.add (ProgressFormatter. *out*)))
     runtime-options))
 
 (defn- create-runtime [runtime-options]
