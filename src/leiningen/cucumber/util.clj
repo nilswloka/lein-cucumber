@@ -10,8 +10,8 @@
     (make-parents report-file)
     (writer report-file)))
 
-(defn- create-runtime-options [feature-paths glue-paths target-path]
-  (let [runtime-options (RuntimeOptions. (into-array String []))]
+(defn- create-runtime-options [feature-paths glue-paths target-path args]
+  (let [runtime-options (RuntimeOptions. (into-array String args))]
     (.addAll (.featurePaths runtime-options) feature-paths)
     (.addAll (.glue runtime-options) glue-paths)
     (doto (.formatters runtime-options)
@@ -24,8 +24,9 @@
         resource-loader (FileResourceLoader.)]
     (cucumber.runtime.Runtime. resource-loader classloader runtime-options)))
 
-(defn run-cucumber! [feature-paths glue-paths target-path]
-  (let [runtime-options (create-runtime-options feature-paths glue-paths target-path)
+(defn run-cucumber! [feature-paths glue-paths target-path args]
+  (let [runtime-options (create-runtime-options feature-paths glue-paths
+                                                target-path args)
         runtime (create-runtime runtime-options)]
     (.run runtime)
     runtime))
