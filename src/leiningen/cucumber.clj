@@ -13,7 +13,7 @@
      (-> project
          (update-in [:dependencies] conj
                     ['lein-cucumber "1.0.0.M1-SNAPSHOT"]
-                    ['info.cukes/cucumber-clojure "1.0.0.RC23-SNAPSHOT"])
+                    ['info.cukes/cucumber-clojure "1.0.0"])
          (update-in [:source-paths] (partial apply conj) glue-paths))
      `(do
         (let [~runtime (leiningen.cucumber.util/run-cucumber! ~feature-paths ~glue-paths ~target-path ~(vec args))]
