@@ -12,8 +12,9 @@
 
 (defn- create-runtime-options [feature-paths glue-paths target-path args]
   (let [runtime-options (RuntimeOptions. (into-array String args))]
-    (.addAll (.featurePaths runtime-options) feature-paths)
-    (.addAll (.glue runtime-options) glue-paths)
+    (if (.. runtime-options featurePaths (isEmpty))
+      (.. runtime-options featurePaths (addAll feature-paths)))
+    (.. runtime-options glue (addAll glue-paths))
     (doto (.formatters runtime-options)
       (.add (CucumberPrettyFormatter. (report-writer target-path)))
       (.add (ProgressFormatter. *out*)))
