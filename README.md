@@ -16,7 +16,7 @@ lein-cucumber requires Leiningen 2.
 
 You can configure feature paths like this:
 
-* Add a `:cucumber-feature-paths` parameter to your project.clj (e.g. `:cucumber-feature-path ["test/features/"]`).
+* Add a `:cucumber-feature-paths` parameter to your project.clj (e.g. `:cucumber-feature-paths ["test/features/"]`).
 * By default, lein-cucumber looks for your `.feature` files in the `features/` directory.
 * Step definitions will be loaded from the `step_definitions/` directories inside your feature directories.
 

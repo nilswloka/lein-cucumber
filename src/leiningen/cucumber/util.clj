@@ -1,6 +1,6 @@
 (ns leiningen.cucumber.util
   (:use [clojure.java.io])
-  (:import [cucumber.formatter CucumberPrettyFormatter])
+  (:import [cucumber.formatter CucumberPrettyFormatter ProgressFormatter])
   (:import [cucumber.io FileResourceLoader])
   (:import [cucumber.runtime.model CucumberFeature])
   (:import [cucumber.runtime RuntimeOptions]))
@@ -10,15 +10,14 @@
     (make-parents report-file)
     (writer report-file)))
 
-(defn- create-runtime-options [feature-paths glue-paths target-path]
-  (let [out (report-writer target-path)
-        formatter (CucumberPrettyFormatter. out)
-        runtime-options
-        (proxy [RuntimeOptions] [(into-array String [])]
-          (reporter [classloader] formatter)
-          (formatter [classloader] formatter)
-          (cucumberFeatures [resource-loader] (CucumberFeature/load resource-loader feature-paths [])))]
-    (set! (. runtime-options glue) (java.util.ArrayList. glue-paths))
+(defn- create-runtime-options [feature-paths glue-paths target-path args]
+  (let [runtime-options (RuntimeOptions. (into-array String args))]
+    (if (.. runtime-options featurePaths (isEmpty))
+      (.. runtime-options featurePaths (addAll feature-paths)))
+    (.. runtime-options glue (addAll glue-paths))
+    (doto (.formatters runtime-options)
+      (.add (CucumberPrettyFormatter. (report-writer target-path)))
+      (.add (ProgressFormatter. *out*)))
     runtime-options))
 
 (defn- create-runtime [runtime-options]
@@ -26,8 +25,9 @@
         resource-loader (FileResourceLoader.)]
     (cucumber.runtime.Runtime. resource-loader classloader runtime-options)))
 
-(defn run-cucumber! [feature-paths glue-paths target-path]
-  (let [runtime-options (create-runtime-options feature-paths glue-paths target-path)
+(defn run-cucumber! [feature-paths glue-paths target-path args]
+  (let [runtime-options (create-runtime-options feature-paths glue-paths
+                                                target-path args)
         runtime (create-runtime runtime-options)]
     (.run runtime)
     runtime))
