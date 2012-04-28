@@ -37,9 +37,13 @@ Glue paths are resolved similarily:
 
 See https://github.com/nilswloka/cucumber-jvm/tree/new-clojure-example/examples/clojure_cukes for an example project.
 
-## Unlicense
+## Note
 
-Written by Nils Wloka, 2012. For licensing information, see UNLICENSE. [![endorse](http://api.coderwall.com/nilswloka/endorsecount.png)](http://coderwall.com/nilswloka)
-Contributions by [Robert P. Levy](https://github.com/rplevy-draker) and [Michael van Acken](https://github.com/mva).
+If you like lein-cucumber, consider endorsing me at [coderwall](http://coderwall.com/nilswloka): 
+[![endorse](http://api.coderwall.com/nilswloka/endorsecount.png)](http://coderwall.com/nilswloka)
+
+## Unlicense
+Written by Nils Wloka, 2012. For licensing information, see UNLICENSE. Contributions by [Robert P. Levy](https://github.com/rplevy-draker) and [Michael van Acken](https://github.com/mva).
+
 Please have a look at http://unlicense.org if you plan to contribute.
 
