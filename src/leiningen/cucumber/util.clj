@@ -3,7 +3,7 @@
   (:import [cucumber.formatter CucumberPrettyFormatter ProgressFormatter])
   (:import [cucumber.io FileResourceLoader])
   (:import [cucumber.runtime.model CucumberFeature])
-  (:import [cucumber.runtime RuntimeOptions]))
+  (:import [cucumber.runtime RuntimeOptions CucumberException]))
 
 (defn- report-writer [target-path]
   (let [report-file (file target-path "test-reports" "cucumber.out")]
@@ -12,9 +12,10 @@
 
 (defn- create-runtime-options [feature-paths glue-paths target-path args]
   (let [runtime-options (RuntimeOptions. (into-array String args))]
-    (if (.. runtime-options featurePaths (isEmpty))
+    (when (.. runtime-options featurePaths (isEmpty))
       (.. runtime-options featurePaths (addAll feature-paths)))
-    (.. runtime-options glue (addAll glue-paths))
+    (when (.. runtime-options glue (isEmpty))
+      (.. runtime-options glue (addAll glue-paths)))
     (doto (.formatters runtime-options)
       (.add (CucumberPrettyFormatter. (report-writer target-path)))
       (.add (ProgressFormatter. *out*)))
@@ -29,5 +30,11 @@
   (let [runtime-options (create-runtime-options feature-paths glue-paths
                                                 target-path args)
         runtime (create-runtime runtime-options)]
-    (.run runtime)
+    (println "Running cucumber...")
+    (println "Looking for features in: " (vec (.featurePaths runtime-options)))
+    (println "Looking for glue in: " (vec (.glue runtime-options)))
+    (try
+      (.run runtime)
+      (catch CucumberException e
+        (println (.getMessage e))))
     runtime))
