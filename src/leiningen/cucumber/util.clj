@@ -11,7 +11,7 @@
     (writer report-file)))
 
 (defn- create-runtime-options [feature-paths glue-paths target-path args]
-  (let [runtime-options (RuntimeOptions. (into-array String args))]
+  (let [runtime-options (RuntimeOptions. (java.util.Properties.) (into-array String args))]
     (when (.. runtime-options featurePaths (isEmpty))
       (.. runtime-options featurePaths (addAll feature-paths)))
     (when (.. runtime-options glue (isEmpty))
