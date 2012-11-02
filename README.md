@@ -6,7 +6,7 @@ This is a leiningen plugin for use with [cucumber-jvm](https://github.com/cucumb
 
 ## Usage
 
-1. Add `[lein-cucumber "1.0.0"]` to `:plugins` in your project.clj
+1. Add `[lein-cucumber "1.0.1"]` to `:plugins` in your project.clj
 2. Run `lein deps` to fetch all dependencies.
 3. Run all Cucumber features with `lein2 cucumber`
 
@@ -46,5 +46,5 @@ If you like lein-cucumber, consider endorsing me at [coderwall](http://coderwall
 ## Unlicense
 Written by Nils Wloka, 2012. For licensing information, see UNLICENSE.
 
-Contributions by [Robert P. Levy](https://github.com/rplevy-draker) and [Michael van Acken](https://github.com/mva). Please have a look at http://unlicense.org if you plan to contribute.
+Contributions by [Robert P. Levy](https://github.com/rplevy-draker), [Michael van Acken](https://github.com/mva), [Jeroen van Dijk](https://github.com/jeroenvandijk) and [Ben Poweski](https://github.com/bpoweski). Please have a look at http://unlicense.org if you plan to contribute.
 
