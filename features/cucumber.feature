@@ -3,6 +3,7 @@ Feature: lein-cucumber works
   Scenario: No features
     Given a lein-cucumber project without special configuration
     And no features in the "features" directory
+    And no step definitions in the "features/step_definitions" directory
     When I run lein-cucumber without command line arguments
     Then the output should include "No features found"
 
