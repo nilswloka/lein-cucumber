@@ -15,7 +15,7 @@
       (.. runtime-options glue (addAll glue-paths)))))
 
 (defn create-partial-runtime-options [{:keys [cucumber-feature-paths target-path cucumber-glue-paths] :or {cucumber-feature-paths ["features"]}} args]
-  (let [runtime-options (RuntimeOptions. (into-array String args))]
+  (let [runtime-options (RuntimeOptions. (java.util.Properties.) (into-array String args))]
     (configure-feature-paths runtime-options cucumber-feature-paths)
     (configure-glue-paths runtime-options cucumber-glue-paths (.featurePaths runtime-options))
     runtime-options))
@@ -32,8 +32,8 @@
     (eval-in-project
      (-> project
          (update-in [:dependencies] conj
-                    ['lein-cucumber "1.0.1-SNAPSHOT"]
-                    ['info.cukes/cucumber-clojure "1.0.4"])
+                    ['lein-cucumber "1.0.1"]
+                    ['info.cukes/cucumber-clojure "1.0.14"])
          (update-in [:source-paths] (partial apply conj) glue-paths))
      `(do
         (let [~runtime (leiningen.cucumber.util/run-cucumber! ~feature-paths ~glue-paths ~target-path ~(vec args))]
