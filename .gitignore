@@ -1,5 +1,6 @@
 pom.xml
 *jar
+*.swp
 /lib/
 /classes/
 .lein-failures

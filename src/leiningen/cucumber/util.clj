@@ -1,24 +1,23 @@
 (ns leiningen.cucumber.util
   (:use [clojure.java.io])
-  (:import [cucumber.formatter CucumberPrettyFormatter ProgressFormatter])
-  (:import [cucumber.io FileResourceLoader])
+  (:import [cucumber.runtime.formatter FormatterFactory])
+  (:import [cucumber.runtime.io FileResourceLoader])
   (:import [cucumber.runtime.model CucumberFeature])
   (:import [cucumber.runtime RuntimeOptions CucumberException]))
 
-(defn- report-writer [target-path]
-  (let [report-file (file target-path "test-reports" "cucumber.out")]
-    (make-parents report-file)
-    (writer report-file)))
-
 (defn- create-runtime-options [feature-paths glue-paths target-path args]
-  (let [runtime-options (RuntimeOptions. (java.util.Properties.) (into-array String args))]
+  (let [runtime-options (RuntimeOptions. (java.util.Properties.)
+                                         (into-array String args))
+        formatter-factory (FormatterFactory.)]
     (when (.. runtime-options featurePaths (isEmpty))
       (.. runtime-options featurePaths (addAll feature-paths)))
     (when (.. runtime-options glue (isEmpty))
       (.. runtime-options glue (addAll glue-paths)))
     (doto (.formatters runtime-options)
-      (.add (CucumberPrettyFormatter. (report-writer target-path)))
-      (.add (ProgressFormatter. *out*)))
+      (.add (.create formatter-factory (str "pretty:"
+                                            (.getAbsolutePath (file target-path
+                                                                    "test-reports"
+                                                                    "cucumber.out"))))))
     runtime-options))
 
 (defn- create-runtime [runtime-options]
