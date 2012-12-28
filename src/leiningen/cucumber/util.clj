@@ -17,8 +17,7 @@
       (.add (.create formatter-factory (str "pretty:"
                                             (.getAbsolutePath (file target-path
                                                                     "test-reports"
-                                                                    "cucumber.out")))))
-      (.add (.create formatter-factory "progress")))
+                                                                    "cucumber.out"))))))
     runtime-options))
 
 (defn- create-runtime [runtime-options]
