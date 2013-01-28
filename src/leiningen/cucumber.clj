@@ -23,19 +23,20 @@
 (defn cucumber
   "Runs Cucumber features in test/features with glue in test/features/step_definitions"
   [project & args]
-  (let [runtime (gensym "runtime")
-        runtime-options (create-partial-runtime-options project args)
-        glue-paths (vec (.glue runtime-options))
-        feature-paths (vec (.featurePaths runtime-options))
-        target-path (:target-path project)
-        project (project/merge-profiles project [:test])]
-    (eval-in-project
-     (-> project
-         (update-in [:dependencies] conj
-                    ['lein-cucumber "1.0.2"]
-                    ['info.cukes/cucumber-clojure "1.1.1"])
-         (update-in [:source-paths] (partial apply conj) glue-paths))
-     `(do
-        (let [~runtime (leiningen.cucumber.util/run-cucumber! ~feature-paths ~glue-paths ~target-path ~(vec args))]
-          (leiningen.core.main/exit (.exitStatus ~runtime))))
-     '(require 'leiningen.cucumber.util 'leiningen.core.main))))
+  (binding [leiningen.core.main/*exit-process?* true]
+    (let [runtime (gensym "runtime")
+          runtime-options (create-partial-runtime-options project args)
+          glue-paths (vec (.glue runtime-options))
+          feature-paths (vec (.featurePaths runtime-options))
+          target-path (:target-path project)
+          project (project/merge-profiles project [:test])]
+      (eval-in-project
+       (-> project
+           (update-in [:dependencies] conj
+                      ['lein-cucumber "1.0.2"]
+                      ['info.cukes/cucumber-clojure "1.1.1"])
+           (update-in [:source-paths] (partial apply conj) glue-paths))
+       `(do
+          (let [~runtime (leiningen.cucumber.util/run-cucumber! ~feature-paths ~glue-paths ~target-path ~(vec args))]
+            (leiningen.core.main/exit (.exitStatus ~runtime))))
+       '(require 'leiningen.cucumber.util 'leiningen.core.main)))))
