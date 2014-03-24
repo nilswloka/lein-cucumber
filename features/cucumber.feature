@@ -44,3 +44,10 @@ Feature: lein-cucumber works
     And a step definition in the "foo" directory
     When I run lein-cucumber with arguments "--glue foo"
     Then the step should be executed
+
+  Scenario: Creates an output file 
+    Given a lein-cucumber project without special configuration
+    And a feature in the "features" directory
+    And a step definition in the "features/step_definitions" directory
+    When I run lein-cucumber without command line arguments
+    Then there should be an output file in the "target/test-reports" directory
