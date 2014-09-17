@@ -1,4 +1,4 @@
-(defproject lein-cucumber "1.0.2"
+(defproject lein-cucumber "1.0.3"
   :description "Run cucumber-jvm specifications with leiningen"
   :dependencies [[info.cukes/cucumber-clojure "1.1.8"]
                  [leiningen-core "2.0.0"]
