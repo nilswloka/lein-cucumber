@@ -1,12 +1,15 @@
-[![Build Status](https://secure.travis-ci.org/nilswloka/lein-cucumber.png)](http://travis-ci.org/nilswloka/lein-cucumber)
+[![Build Status](https://secure.travis-ci.org/punkisdead/lein-cucumber.png)](http://travis-ci.org/punkisdead/lein-cucumber)
 
 # lein-cucumber
 
 This is a leiningen plugin for use with [cucumber-jvm](https://github.com/cucumber/cucumber-jvm).
+This is a fork of [lein-cucumber](http://github.com/nilswloka/lein-cucumber) with more up to date dependencies.
+
+[![Clojars Project](http://clojars.org/org.clojars.punkisdead/lein-cucumber/latest-version.svg)](http://clojars.org/org.clojars.punkisdead/lein-cucumber)
 
 ## Usage
 
-1. Add `[lein-cucumber "1.0.2"]` to `:plugins` in your project.clj
+1. Add `[lein-cucumber "1.0.4"]` to `:plugins` in your project.clj
 2. Run `lein deps` to fetch all dependencies.
 3. Run all Cucumber features with `lein cucumber`
 
@@ -27,24 +30,27 @@ Glue paths are resolved similarily:
 1. Command line options (e.g. `lein cucumber --glue somewhere/my_stepdefs`) override all other settings.
 2. If no command line options for glue paths are given, step definitions will be loaded from `step_definitions/` directories inside your feature directories.
 
+Formatted output
+
+1. Results are only printed to the console unless you specify a formatter
+2. To create an HTML report you can run the plugin with the following command `lein cucumber --plugin html:target/test-reports`
+
 ## Other settings
 
  The following settings are hard-coded into the plugin:
 
-* A summary report will be printed to the console. 
-* The complete report (formatted with `CucumberPrettyFormatter`) will be written to `test-reports/cucumber.out` inside your project's target directory (usually `target/`).
+* A summary report will be printed to the console.
 * Leiningen will exit with the exit status of the cucumber-jvm [runtime](https://github.com/cucumber/cucumber-jvm/blob/master/core/src/main/java/cucumber/runtime/Runtime.java).
 
 See https://github.com/nilswloka/cucumber-jvm/tree/new-clojure-example/examples/clojure_cukes for an example project.
 
 ## Note
 
-If you like lein-cucumber, consider endorsing me at [coderwall](http://coderwall.com/nilswloka): 
+If you like lein-cucumber, consider endorsing me at [coderwall](http://coderwall.com/punkisdead):
 
-[![endorse](http://api.coderwall.com/nilswloka/endorsecount.png)](http://coderwall.com/nilswloka)
+[![endorse](http://api.coderwall.com/punkisdead/endorsecount.png)](http://coderwall.com/punkisdead)
 
 ## Unlicense
-Written by Nils Wloka, 2012. For licensing information, see UNLICENSE.
+Written by Jeremy Anderson, 2015. For licensing information, see UNLICENSE.
 
-Contributions by [Robert P. Levy](https://github.com/rplevy-draker), [Michael van Acken](https://github.com/mva), [Jeroen van Dijk](https://github.com/jeroenvandijk), [Ben Poweski](https://github.com/bpoweski) and [shaolang](https://github.com/shaolang). Please have a look at http://unlicense.org if you plan to contribute.
-
+Please have a look at http://unlicense.org if you plan to contribute.
