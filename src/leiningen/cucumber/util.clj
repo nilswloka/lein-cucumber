@@ -1,22 +1,16 @@
 (ns leiningen.cucumber.util
   (:use [clojure.java.io])
   (:import [cucumber.runtime.clj Backend])
-  (:import [cucumber.runtime.formatter FormatterFactory])
   (:import [cucumber.runtime.io MultiLoader])
   (:import [cucumber.runtime.model CucumberFeature])
   (:import [cucumber.runtime RuntimeOptions CucumberException]))
 
 (defn- create-runtime-options [feature-paths glue-paths target-path args]
-  (let [runtime-options (RuntimeOptions. (vec args))
-        formatter-factory (FormatterFactory.)]
+  (let [runtime-options (RuntimeOptions. (vec args))]
     (when (.. runtime-options (getFeaturePaths) (isEmpty))
       (.. runtime-options (getFeaturePaths) (addAll feature-paths)))
     (when (.. runtime-options (getGlue) (isEmpty))
       (.. runtime-options (getGlue) (addAll glue-paths)))
-    (.addFormatter runtime-options (.create formatter-factory (str "pretty:"
-                                                                   (.getAbsolutePath (file target-path
-                                                                                           "test-reports"
-                                                                                           "cucumber.out")))))
     runtime-options))
 
 

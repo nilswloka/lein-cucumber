@@ -92,3 +92,6 @@
 
 (Then #"^there should be an output file in the \"([^\"]*)\" directory$" [arg1]
       (assert (.exists (as-file "target/test_project/target/test-reports/cucumber.out"))))
+
+(Then #"^there should be an html file in the \"([^\"]*)\" directory$" [arg1]
+      (assert (.exists (as-file "target/test_project/target/test-reports/index.html"))))
