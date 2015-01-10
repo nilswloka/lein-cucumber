@@ -1,4 +1,5 @@
 pom.xml
+pom.xml.asc
 *jar
 *.swp
 /lib/
@@ -6,3 +7,4 @@ pom.xml
 .lein-failures
 .lein-deps-sum
 /target/
+.nrepl-port

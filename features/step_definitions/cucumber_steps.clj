@@ -80,8 +80,18 @@
       (writing-to-result
        (fn [] (apply cucumber (concat (vector (read-project)) (re-seq #"\S+\b" args))))))
 
+(When #"^I run lein-cucumber with default output$" []
+      (cucumber (read-project)))
+
+
 (Then #"^the output should include \"([^\"]*)\"$" [expected-output]
       (assert-output-includes expected-output))
 
 (Then #"^the step should be executed" []
       (assert-output-includes "{{{STEP EXECUTED}}}"))
+
+(Then #"^there should be an output file in the \"([^\"]*)\" directory$" [arg1]
+      (assert (.exists (as-file "target/test_project/target/test-reports/cucumber.out"))))
+
+(Then #"^there should be an html file in the \"([^\"]*)\" directory$" [arg1]
+      (assert (.exists (as-file "target/test_project/target/test-reports/index.html"))))
