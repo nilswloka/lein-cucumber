@@ -25,7 +25,8 @@ Feature paths are resolved in the following order:
 Glue paths are resolved similarily:
 
 1. Command line options (e.g. `lein cucumber --glue somewhere/my_stepdefs`) override all other settings.
-2. If no command line options for glue paths are given, step definitions will be loaded from `step_definitions/` directories inside your feature directories.
+2. If no command line options for glue paths are given, the `:cucumber-glue-paths parameter` in your project.clj will be used (e.g. `:cucumber-glue-paths ["test/features/support" "test/features/step_definitions"]`).
+3. If neither command line options nor parameters is used, step definitions will be loaded from `step_definitions/` directories inside your feature directories.
 
 ## Other settings
 
